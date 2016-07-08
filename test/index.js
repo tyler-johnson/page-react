@@ -25,9 +25,12 @@ test("renders layout into element", (t) => {
 	resetPage();
 	page(pageReact(div, Layout));
 	page(function(ctx) {
-		const layout = ctx.render();
-		const el = findDOMNode(layout);
-		t.ok(div.contains(el), "layout element is in the div container");
+		ctx.render(null, {
+			ref: function(layout) {
+				const el = findDOMNode(layout);
+				t.ok(div.contains(el), "layout element is in the div container");
+			}
+		});
 	});
 
 	page.show("/", {}, true, false);
@@ -51,15 +54,16 @@ test("renders layout into selector", (t) => {
 	resetPage();
 	page(pageReact(".test-class", Layout));
 	page(function(ctx) {
-		const layout = ctx.render();
-		const el = findDOMNode(layout);
-		t.ok(div.contains(el), "layout element is in the div container");
+		ctx.render(null, {
+			ref: function(layout) {
+				const el = findDOMNode(layout);
+				t.ok(div.contains(el), "layout element is in the div container");
+			}
+		});
 	});
 
 	page.show("/", {}, true, false);
-
 	document.body.removeChild(div);
-	t.end();
 });
 
 test("renders with layout children", (t) => {
@@ -84,15 +88,16 @@ test("renders with layout children", (t) => {
 	resetPage();
 	page(pageReact(div, Layout));
 	page(function(ctx) {
-		const layout = ctx.render(<Body />);
-		const body = findByType(layout, Body);
-		const el = findDOMNode(body);
-		t.ok(div.contains(el), "body element is in the div container");
+		ctx.render(<Body />, {
+			ref: function(layout) {
+				const body = findByType(layout, Body);
+				const el = findDOMNode(body);
+				t.ok(div.contains(el), "body element is in the div container");
+			}
+		});
 	});
 
 	page.show("/", {}, true, false);
-
-	t.end();
 });
 
 test("accepts layout default props", (t) => {
