@@ -17,8 +17,9 @@ export default function(target, Layout, props={}) {
 
     // method to render a view on the page
     ctx.render = function(bodyView, layoutProps) {
-      const p = { ...props, ...layoutProps };
-      return ReactDOM.render(React.createElement(Layout, p, bodyView), mainEl);
+      const p = { ...props, ...ctx.props, ...layoutProps };
+      const view = React.createElement(Layout, p, bodyView);
+      return ReactDOM.render(view, mainEl); // eslint-disable-line react/no-render-return-value
     };
 
     next();

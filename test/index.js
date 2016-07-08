@@ -148,3 +148,31 @@ test("render() accepts layout props", (t) => {
 
 	t.end();
 });
+
+test("render() accepts context props", (t) => {
+	t.plan(1);
+
+	const div = document.createElement("div");
+	const props = { foo: "bar" };
+
+	const Layout = React.createClass({
+		render() {
+			t.ok(Object.keys(props).every((key) => {
+				return this.props[key] === props[key];
+			}), "props has render values");
+
+			return <div></div>;
+		}
+	});
+
+	resetPage();
+	page(pageReact(div, Layout));
+	page(function(ctx) {
+		ctx.props = { ...props };
+		ctx.render();
+	});
+
+	page.show("/", {}, true, false);
+
+	t.end();
+});
